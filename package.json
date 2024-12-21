@@ -1,0 +1,28 @@
+{
+  "name": "task-manager",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "dotenv -e .env -- nodemon server.js",
+    "db": "dotenv -e .env -- sequelize-cli db:create --config ./sequelizeConfigs.js",
+    "migrate": "dotenv -e .env -- sequelize-cli db:migrate  --config ./sequelizeConfigs.js",
+    "rmMigrate": "dotenv -e .env -- sequelize-cli db:migrate:undo:all  --config ./sequelizeConfigs.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "dotenv-cli": "^8.0.0",
+    "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "fastify": "^5.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.5",
+    "sequelize": "^6.37.5",
+    "sequelize-cli": "^6.6.2",
+    "yup": "^1.6.1"
+  }
+}
