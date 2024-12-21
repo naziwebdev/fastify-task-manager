@@ -44,4 +44,7 @@ const User = (sequelize) => {
   );
 };
 
+
+
+
 module.exports = User;
