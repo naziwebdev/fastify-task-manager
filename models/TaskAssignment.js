@@ -1,8 +1,10 @@
 const { DataTypes } = require("sequelize");
 
-const Project = (sequelize) => {
+//_id & task_id => associates
+
+const TaskAssignment = (sequelize) => {
   return sequelize.define(
-    "Project",
+    "TaskAssignment",
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -10,17 +12,9 @@ const Project = (sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      description: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      }
     },
     {
-      tableName: "projects",
+      tableName: "task_assignments",
       timestamps: true,
       createdAt: created_at,
       updatedAt: updated_at,
@@ -28,4 +22,4 @@ const Project = (sequelize) => {
   );
 };
 
-module.exports = Project
+module.exports = TaskAssignment;

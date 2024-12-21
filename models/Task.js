@@ -1,13 +1,13 @@
 const { DataTypes } = require("sequelize");
 
-//assignedMember => associate
+//project_id => associates
 
 const Task = (sequelize) => {
   return sequelize.define(
     "Task",
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -22,7 +22,7 @@ const Task = (sequelize) => {
       },
       status: {
         type: DataTypes.ENUM,
-        validate: ["pendding", "progressing", "completed"],
+        values: ["pendding", "progressing", "completed"],
         defaultValue: "pendding",
         allowNull: false,
       },

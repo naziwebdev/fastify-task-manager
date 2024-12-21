@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "dotenv -e .env -- nodemon server.js",
-    "db": "dotenv -e .env -- sequelize-cli db:create --config ./sequelizeConfigs.js",
-    "migrate": "dotenv -e .env -- sequelize-cli db:migrate  --config ./sequelizeConfigs.js",
-    "rmMigrate": "dotenv -e .env -- sequelize-cli db:migrate:undo:all  --config ./sequelizeConfigs.js"
+    "dev": "dotenv -e .env -- nodemon app.js",
+    "db": "dotenv -e .env -- sequelize-cli db:create --config ./sequelizeConfig.js",
+    "migrate": "dotenv -e .env -- sequelize-cli db:migrate  --config ./sequelizeConfig.js",
+    "rmMigrate": "dotenv -e .env -- sequelize-cli db:migrate:undo:all  --config ./sequelizeConfig.js"
   },
   "keywords": [],
   "author": "",
