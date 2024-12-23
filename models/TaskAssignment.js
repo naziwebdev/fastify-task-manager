@@ -16,8 +16,8 @@ const TaskAssignment = (sequelize) => {
     {
       tableName: "task_assignments",
       timestamps: true,
-      createdAt: created_at,
-      updatedAt: updated_at,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
     }
   );
 };
