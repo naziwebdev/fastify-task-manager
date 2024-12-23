@@ -5,10 +5,12 @@ const configs = require("./configs");
 //load routes
 const authRouter = require("./routes/auth");
 const projectRouter = require("./routes/project");
+const taskRouter = require("./routes/task");
 
 //routes
 fastify.register(authRouter, { prefix: "/api/v1/auth" });
 fastify.register(projectRouter, { prefix: "/api/v1/projects" });
+fastify.register(taskRouter, { prefix: "/api/v1/tasks" });
 
 //error handler
 fastify.setErrorHandler((error, request, reply) => {
