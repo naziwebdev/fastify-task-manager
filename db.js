@@ -21,7 +21,17 @@ const Task = require("./models/Task")(db);
 /** @type {import('sequelize').ModelCtor<import('sequelize').Model<any, any>} */
 const TaskAssignment = require("./models/TaskAssignment")(db);
 
-//project & task => 1-m
+//project & user =>1:m
+User.hasMany(Project, {
+  foreignKey: "creator_id",
+  onDelete: "CASCADE",
+});
+
+Project.belongsTo(User, {
+  foreignKey: "creator_id",
+});
+
+//project & task => 1:m
 Project.hasMany(Task, {
   foreignKey: "project_id",
   onDelete: "CASCADE",
@@ -31,7 +41,7 @@ Task.belongsTo(Project, {
   foreignKey: "project_id",
 });
 
-//task & user => m-m
+//task & user => m:m
 Task.belongsToMany(User, {
   through: TaskAssignment,
   onDelete: "CASCADE",

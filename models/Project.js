@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 
+//creator_id => associate
 const Project = (sequelize) => {
   return sequelize.define(
     "Project",
