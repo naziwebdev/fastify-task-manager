@@ -23,7 +23,11 @@ const createUser = async (username, phone, email, password) => {
 
 const getUserById = async (id) => {
   try {
-    const user = await User.findOne({ where: { id }, raw: true });
+    const user = await User.findOne({
+      where: { id },
+      attributes: { exclude: ["password"] },
+      raw: true,
+    });
     return user;
   } catch (error) {
     throw new Error(error);
