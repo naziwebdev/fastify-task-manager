@@ -71,6 +71,12 @@ exports.login = async (request, reply) => {
 };
 exports.me = async (request, reply) => {
   try {
+
+    const user = request.user
+
+    return reply.status(200).send(user)
+
+
   } catch (error) {
     reply.send(error);
   }
