@@ -41,6 +41,18 @@ exports.getUserProjects = async (request, reply) => {
 
 exports.getoneProject = async (request, reply) => {
   try {
+    const { id } = request.params;
+
+    if (id === undefined || id === null || id === "" || isNaN(id)) {
+      return reply.status(422).send({ message: "commentId is not valid" });
+    }
+
+    const project = await getProjectById(id);
+    if (!project) {
+      return reply.status(404).send({ message: "not found project" });
+    }
+
+    return reply.status(200).send(project);
   } catch (error) {
     return reply.send(error);
   }
