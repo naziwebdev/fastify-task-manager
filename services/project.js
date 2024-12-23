@@ -41,7 +41,7 @@ const updateProject = async (title, description, id) => {
       { title, description },
       { where: { id } }
     );
-    return updateProject;
+    return updatedProject;
   } catch (error) {
     throw new Error(error);
   }

@@ -59,6 +59,24 @@ exports.getoneProject = async (request, reply) => {
 };
 exports.update = async (request, reply) => {
   try {
+    const { id } = request.params;
+    const { title, description } = request.body;
+
+    await updateProjectValidator.validate(request.body, { abortEarly: false });
+
+    if (id === undefined || id === null || id === "" || isNaN(id)) {
+      return reply.status(422).send({ message: "commentId is not valid" });
+    }
+
+    const existProject = await getProjectById(id);
+
+    if (!existProject) {
+      return reply.status(404).send({ message: "not found project" });
+    }
+
+    await updateProject(title, description, id);
+
+    return reply.status(200).send({ message: "project updated successfully" });
   } catch (error) {
     return reply.send(error);
   }
