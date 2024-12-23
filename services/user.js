@@ -33,9 +33,9 @@ const getUserById = async (id) => {
 const getUserByPhoneOrEmail = async (phone, email) => {
   const user = await User.findOne({
     where: {
-      [Op.or]: [{ email }, { phone }],
+      [Op.or]: [email ? { email } : null, phone ? { phone } : null],
     },
-    raw:true
+    raw: true,
   });
 
   return user;

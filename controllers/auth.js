@@ -7,6 +7,7 @@ const { registerValidator } = require("../validators/register");
 const { loginValidator } = require("../validators/login");
 const jwt = require("jsonwebtoken");
 const configs = require("../configs");
+const bcrypt = require("bcrypt");
 
 exports.register = async (request, reply) => {
   try {
@@ -37,6 +38,33 @@ exports.register = async (request, reply) => {
 };
 exports.login = async (request, reply) => {
   try {
+    const { email, phone, password } = request.body;
+
+    await loginValidator.validate(request.body, { abortEarly:true});
+
+    const user = await getUserByPhoneOrEmail(phone, email);
+
+    if (!user) {
+      return reply
+        .status(404)
+        .send({ message: "email or phone or password is incorrect" });
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (!validPassword) {
+      return reply
+        .status(400)
+        .send({ message: "email or phone or password is incorrect" });
+    }
+
+    const token = jwt.sign({ id: user.id }, configs.auth.accessTokenSecretKey, {
+      expiresIn: +configs.auth.accessTokenExpired,
+    });
+
+    reply.header("Authorization", `Bearer ${token}`);
+
+    return reply.status(200).send({ message: "user login successfully" });
   } catch (error) {
     reply.send(error);
   }
