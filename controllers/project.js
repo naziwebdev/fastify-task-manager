@@ -1,5 +1,26 @@
+const {
+  createProjectValidator,
+  updateProjectValidator,
+} = require("../validators/project");
+const {
+  createProject,
+  getProjectsUser,
+  getProjectById,
+  updateProject,
+  removeProject,
+} = require("../services/project");
+
 exports.create = async (request, reply) => {
   try {
+    const creator = request.user.id;
+    const { title, description } = request.body;
+    await createProjectValidator.validate(request.body, { abortEarly: false });
+
+    const project = await createProject(title, description, creator);
+
+    console.log(project);
+
+    return reply.status(201).send({ message: "project created successfully" });
   } catch (error) {
     return reply.send(error);
   }

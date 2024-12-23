@@ -22,7 +22,7 @@ const authMiddleware = async (request, reply) => {
     if (!user) {
       return reply.status(401).send({ message: "token is invalid" });
     }
-    console.log(user)
+    
     request.user = user;
   } catch (error) {
     return reply.status(401).send({ message: "token is invalid" });

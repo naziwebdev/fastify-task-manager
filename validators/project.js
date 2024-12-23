@@ -1,6 +1,6 @@
 const yup = require("yup");
 
-const createProject = yup.object().shape({
+const createProjectValidator = yup.object().shape({
   title: yup
     .string()
     .min(3, "title must be at least 3 char")
@@ -13,7 +13,7 @@ const createProject = yup.object().shape({
     .required("title is required"),
 });
 
-const updateProject = yup.object().shape({
+const updateProjectValidator = yup.object().shape({
   title: yup
     .string()
     .min(3, "title must be at least 3 char")
@@ -24,4 +24,4 @@ const updateProject = yup.object().shape({
     .max(255, "title must be max 255 chars"),
 });
 
-module.exports = { createProject, updateProject };
+module.exports = { createProjectValidator, updateProjectValidator };
