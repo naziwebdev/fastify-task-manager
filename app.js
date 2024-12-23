@@ -4,10 +4,11 @@ const configs = require("./configs");
 
 //load routes
 const authRouter = require("./routes/auth");
-
+const projectRouter = require("./routes/project");
 
 //routes
 fastify.register(authRouter, { prefix: "/api/v1/auth" });
+fastify.register(projectRouter, { prefix: "/api/v1/projects" });
 
 //error handler
 fastify.setErrorHandler((error, request, reply) => {
@@ -16,8 +17,8 @@ fastify.setErrorHandler((error, request, reply) => {
       .status(400)
       .send({ error: "Validation Error", details: error.validation });
   } else {
-    console.log(error)
-    reply.status(500).send({ error: "Internal Server Error"});
+    console.log(error);
+    reply.status(500).send({ error: "Internal Server Error" });
   }
 });
 
