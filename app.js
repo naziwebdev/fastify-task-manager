@@ -16,7 +16,8 @@ fastify.setErrorHandler((error, request, reply) => {
       .status(400)
       .send({ error: "Validation Error", details: error.validation });
   } else {
-    reply.status(500).send({ error: "Internal Server Error" });
+    console.log(error)
+    reply.status(500).send({ error: "Internal Server Error"});
   }
 });
 

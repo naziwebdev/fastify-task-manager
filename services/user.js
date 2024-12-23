@@ -1,12 +1,18 @@
 const { User } = require("../db");
 const { Op } = require("sequelize");
 
-
-
 const createUser = async (username, phone, email, password) => {
   try {
+    const isFirstUser = await User.count();
+
     const user = await User.create(
-      { username, phone, email, password },
+      {
+        username,
+        phone,
+        email,
+        password,
+        role: isFirstUser > 0 ? "user" : "admin",
+      },
       { raw: true }
     );
     return user;
@@ -29,9 +35,10 @@ const getUserByPhoneOrEmail = async (phone, email) => {
     where: {
       [Op.or]: [{ email }, { phone }],
     },
+    raw:true
   });
 
   return user;
 };
 
-module.exports = { createUser, getUserById , getUserByPhoneOrEmail};
+module.exports = { createUser, getUserById, getUserByPhoneOrEmail };
