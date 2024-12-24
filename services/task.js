@@ -35,16 +35,10 @@ const getProjectTasks = async (project_id) => {
       where: { project_id },
       include: [
         {
-          model: TaskAssignment,
-          as: "TaskAssignment",
-          include: [
-            {
-              model: User,
-              as: "User",
-              attributes: ["id", "username", "email", "phone"],
-            },
-          ],
-          through: { attributes: [] },
+          model: User,
+          as: "users",
+          through: { model: TaskAssignment, attributes: [] },
+          attributes: ["id", "username", "email", "phone"],
         },
       ],
     });
@@ -60,16 +54,10 @@ const getOneTask = async (id) => {
       where: { id },
       include: [
         {
-          model: TaskAssignment,
-          as: "TaskAssignment",
-          include: [
-            {
-              model: User,
-              as: "User",
-              attributes: ["id", "username", "email", "phone"],
-            },
-          ],
-          through: { attributes: [] },
+          model: User,
+          as: "users",
+          through: { model: TaskAssignment, attributes: [] },
+          attributes: ["id", "username", "email", "phone"],
         },
       ],
     });

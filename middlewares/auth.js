@@ -6,7 +6,7 @@ const authMiddleware = async (request, reply) => {
   try {
     let token = request.headers.authorization;
 
-    console.log(token,'tokkken')
+    
     if (!token) {
       return reply.status(404).send({ message: "not found token" });
     }

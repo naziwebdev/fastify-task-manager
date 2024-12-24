@@ -3,10 +3,18 @@ const controllers = require("../controllers/task");
 
 async function taskRoute(fastify, options) {
   fastify.post("/", { preHandler: authMiddleware }, controllers.create);
-  fastify.get("/", { preHandler: authMiddleware }, controllers.getAll);
-  fastify.get("/:id", { preHandler: authMiddleware }, controllers.getOne);
-  fastify.put("/:id", { preHandler: authMiddleware }, controllers.update);
-  fastify.delete("/:id", { preHandler: authMiddleware }, controllers.remove);
+  fastify.get(
+    "/:project_id/tasks",
+    { preHandler: authMiddleware },
+    controllers.getAll
+  );
+  fastify.get("/:task_id", { preHandler: authMiddleware }, controllers.getOne);
+  fastify.put("/:task_id", { preHandler: authMiddleware }, controllers.update);
+  fastify.delete(
+    "/:task_id",
+    { preHandler: authMiddleware },
+    controllers.remove
+  );
 }
 
 module.exports = taskRoute;

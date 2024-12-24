@@ -39,6 +39,20 @@ exports.create = async (request, reply) => {
 };
 exports.getAll = async (request, reply) => {
   try {
+    const userId = request.user.id;
+    const { project_id } = request.params;
+
+    const isCreator = await isCreatorOfProject(project_id, userId);
+    if (!isCreator) {
+      return reply
+        .status(403)
+        .send({ message: "access to this route is dynied" });
+    }
+
+    const tasks = await getProjectTasks(project_id);
+
+
+    return reply.status(200).send(tasks);
   } catch (error) {
     return reply.send(error);
   }

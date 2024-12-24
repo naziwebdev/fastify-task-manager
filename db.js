@@ -44,14 +44,16 @@ Task.belongsTo(Project, {
 //task & user => m:m
 Task.belongsToMany(User, {
   through: TaskAssignment,
-  onDelete: "CASCADE",
   foreignKey: "task_id",
+  as:"users",
+  onDelete: "CASCADE",
 });
 
 User.belongsToMany(Task, {
   through: TaskAssignment,
-  onDelete: "CASCADE",
   foreignKey: "user_id",
+  as:"tasks",
+  onDelete: "CASCADE",
 });
 
 module.exports = { db, User, Project, Task, TaskAssignment };
