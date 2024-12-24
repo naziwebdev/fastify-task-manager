@@ -119,6 +119,18 @@ const isCreatorOfProject = async (project_id, userId) => {
   }
 };
 
+const isOwnTask = async (userId, taskId) => {
+  try {
+    const isMemberOwnTask = await TaskAssignment.findOne({
+      where: { user_id: userId, task_id: taskId },raw:true
+    });
+
+    return isMemberOwnTask
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 module.exports = {
   createTask,
   getProjectTasks,
@@ -126,4 +138,5 @@ module.exports = {
   isCreatorOfProject,
   editTask,
   removeTask,
+  isOwnTask,
 };

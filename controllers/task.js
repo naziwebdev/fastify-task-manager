@@ -5,6 +5,7 @@ const {
   isCreatorOfProject,
   editTask,
   removeTask,
+  isOwnTask,
 } = require("../services/task");
 
 const {
@@ -51,7 +52,6 @@ exports.getAll = async (request, reply) => {
 
     const tasks = await getProjectTasks(project_id);
 
-
     return reply.status(200).send(tasks);
   } catch (error) {
     return reply.send(error);
@@ -59,6 +59,19 @@ exports.getAll = async (request, reply) => {
 };
 exports.getOne = async (request, reply) => {
   try {
+    const userId = request.user.id;
+    const { task_id } = request.params;
+
+    const isOwnerTask = await isOwnTask(userId, task_id);
+    if (!isOwnerTask) {
+      return reply
+        .status(403)
+        .send({ message: "access to this route is dynied" });
+    }
+
+    const task = await getOneTask(task_id);
+
+    return reply.status(200).send(task);
   } catch (error) {
     return reply.send(error);
   }
