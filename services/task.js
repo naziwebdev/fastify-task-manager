@@ -119,10 +119,10 @@ const removeTask = async (id) => {
     throw new Error(error);
   }
 };
-const isCreatorOfProject = async (userId) => {
+const isCreatorOfProject = async (project_id, userId) => {
   try {
     const isCreator = await Project.findOne({
-      where: { creator_id: userId },
+      where: { id: project_id, creator_id: userId },
       raw: true,
     });
     return isCreator;
