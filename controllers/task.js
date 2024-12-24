@@ -4,6 +4,7 @@ const {
   getOneTask,
   isCreatorOfProject,
   editTask,
+  editTaskStatus,
   removeTask,
   isOwnTask,
 } = require("../services/task");
@@ -11,6 +12,7 @@ const {
 const {
   createTaskValidator,
   updateTaskValidator,
+  updateTaskStatusValidator,
 } = require("../validators/task");
 
 exports.create = async (request, reply) => {
@@ -138,6 +140,35 @@ exports.update = async (request, reply) => {
 
 exports.editStatusTask = async (request, reply) => {
   try {
+    const userId = request.user.id;
+    const { task_id } = request.params;
+    const { status } = request.body;
+    await updateTaskStatusValidator.validate(request.body, {
+      abortEarly: false,
+    });
+    if (
+      task_id === undefined ||
+      task_id === null ||
+      task_id === "" ||
+      isNaN(task_id)
+    ) {
+      return reply.status(422).send({ message: "task_id is not valid" });
+    }
+    const isOwnerTask = await isOwnTask(userId, task_id);
+    if (!isOwnerTask) {
+      return reply
+        .status(403)
+        .send({ message: "access to this route is dynied" });
+    }
+
+    const existTask = await getOneTask(task_id);
+    if (!existTask) {
+      return reply.status(404).send({ message: "not found task" });
+    }
+
+    await editTaskStatus(status, task_id);
+
+    return reply.status(200).send({ message: "status updated successfully" });
   } catch (error) {
     return reply.send(error);
   }

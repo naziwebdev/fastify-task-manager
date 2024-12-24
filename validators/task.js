@@ -41,4 +41,11 @@ const updateTaskValidator = yup.object().shape({
     .min(1, "must be at least one member"),
 });
 
-module.exports = { createTaskValidator, updateTaskValidator };
+const updateTaskStatusValidator = yup.object().shape({
+  status: yup
+    .string()
+    .oneOf(["pendding", "progressing", "completed"])
+    .required("status is required"),
+});
+
+module.exports = { createTaskValidator, updateTaskValidator ,updateTaskStatusValidator};
