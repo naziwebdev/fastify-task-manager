@@ -1,6 +1,18 @@
 const fastify = require("fastify")({ logger: true });
 const { db } = require("./db");
 const configs = require("./configs");
+const cors = require('@fastify/cors');
+
+//cors
+fastify.register(cors, {
+  origin: '*', 
+  methods: ['GET', 'POST','DELETE','PATCH','PUT','OPTIONS'],
+  headers: ['Content-Type', 'Authorization'],
+  credentials: true,
+  maxAge: 3600,
+});
+
+
 
 //load routes
 const authRouter = require("./routes/auth");
