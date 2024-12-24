@@ -175,6 +175,31 @@ exports.editStatusTask = async (request, reply) => {
 };
 exports.remove = async (request, reply) => {
   try {
+    const userId = request.user.id;
+    const { task_id } = request.params;
+    const existTask = await getOneTask(task_id);
+    if (!existTask) {
+      return reply.status(404).send({ message: "not found task" });
+    }
+
+    const isCreator = await isCreatorOfProject(existTask.project_id, userId);
+    if (!isCreator) {
+      return reply
+        .status(403)
+        .send({ message: "access to this route is dynied" });
+    }
+
+    if (
+      task_id === undefined ||
+      task_id === null ||
+      task_id === "" ||
+      isNaN(task_id)
+    ) {
+      return reply.status(422).send({ message: "task_id is not valid" });
+    }
+
+    await removeTask(task_id);
+    reply.status(200).send({ message: "task removed successfully" });
   } catch (error) {
     return reply.send(error);
   }
