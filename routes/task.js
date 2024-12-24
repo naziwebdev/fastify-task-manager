@@ -10,6 +10,11 @@ async function taskRoute(fastify, options) {
   );
   fastify.get("/:task_id", { preHandler: authMiddleware }, controllers.getOne);
   fastify.put("/:task_id", { preHandler: authMiddleware }, controllers.update);
+  fastify.patch(
+    "/:task_id/status",
+    { preHandler: authMiddleware },
+    controllers.editStatusTask
+  );
   fastify.delete(
     "/:task_id",
     { preHandler: authMiddleware },

@@ -42,6 +42,14 @@ exports.getAll = async (request, reply) => {
   try {
     const userId = request.user.id;
     const { project_id } = request.params;
+    if (
+      project_id === undefined ||
+      project_id === null ||
+      project_id === "" ||
+      isNaN(project_id)
+    ) {
+      return reply.status(422).send({ message: "project_id is not valid" });
+    }
 
     const isCreator = await isCreatorOfProject(project_id, userId);
     if (!isCreator) {
@@ -61,7 +69,14 @@ exports.getOne = async (request, reply) => {
   try {
     const userId = request.user.id;
     const { task_id } = request.params;
-
+    if (
+      task_id === undefined ||
+      task_id === null ||
+      task_id === "" ||
+      isNaN(task_id)
+    ) {
+      return reply.status(422).send({ message: "task_id is not valid" });
+    }
     const isOwnerTask = await isOwnTask(userId, task_id);
     if (!isOwnerTask) {
       return reply
@@ -77,6 +92,51 @@ exports.getOne = async (request, reply) => {
   }
 };
 exports.update = async (request, reply) => {
+  try {
+    const userId = request.user.id;
+
+    const { title, description, deadline, project_id, assignMembers, status } =
+      request.body;
+    const isCreator = await isCreatorOfProject(project_id, userId);
+    if (!isCreator) {
+      return reply
+        .status(403)
+        .send({ message: "access to this route is dynied" });
+    }
+    const { task_id } = request.params;
+    if (
+      task_id === undefined ||
+      task_id === null ||
+      task_id === "" ||
+      isNaN(task_id)
+    ) {
+      return reply.status(422).send({ message: "task_id is not valid" });
+    }
+
+    await updateTaskValidator.validate(request.body, { abortEarly: false });
+
+    const existTask = await getOneTask(task_id);
+    if (!existTask) {
+      return reply.status(404).send({ message: "not found task" });
+    }
+
+    await editTask(
+      title,
+      description,
+      deadline,
+      status,
+      project_id,
+      assignMembers,
+      task_id
+    );
+
+    return reply.status(200).send({ message: "task updated successfully" });
+  } catch (error) {
+    return reply.send(error);
+  }
+};
+
+exports.editStatusTask = async (request, reply) => {
   try {
   } catch (error) {
     return reply.send(error);

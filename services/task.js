@@ -67,13 +67,27 @@ const getOneTask = async (id) => {
     throw new Error(error);
   }
 };
+const editTaskStatus = async (status, task_id) => {
+  try {
+    await Task.update(
+      {
+        status,
+      },
+      { where: { id: task_id } }
+    );
+
+    return true;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 const editTask = async (
   title,
   description,
   deadline,
+  status,
   project_id,
   assignMembers,
-  status,
   id
 ) => {
   try {
@@ -88,11 +102,15 @@ const editTask = async (
       { where: { id } }
     );
 
-    assignMembers.map(async (member) => {
-      return await TaskAssignment.update({
-        user_id: member,
-      });
-    });
+    await TaskAssignment.destroy({ where: { task_id: id } });
+    const newAssignments = assignMembers.map((member) => ({
+      task_id:id,
+      user_id: member,
+      created_at: new Date(),
+      updated_at: new Date(),
+    }));
+
+    await TaskAssignment.bulkCreate(newAssignments);
 
     return true;
   } catch (error) {
@@ -122,10 +140,11 @@ const isCreatorOfProject = async (project_id, userId) => {
 const isOwnTask = async (userId, taskId) => {
   try {
     const isMemberOwnTask = await TaskAssignment.findOne({
-      where: { user_id: userId, task_id: taskId },raw:true
+      where: { user_id: userId, task_id: taskId },
+      raw: true,
     });
 
-    return isMemberOwnTask
+    return isMemberOwnTask;
   } catch (error) {
     throw new Error(error);
   }
@@ -139,4 +158,5 @@ module.exports = {
   editTask,
   removeTask,
   isOwnTask,
+  editTaskStatus,
 };
