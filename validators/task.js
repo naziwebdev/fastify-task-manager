@@ -11,10 +11,6 @@ const createTaskValidator = yup.object().shape({
     .min(3, "title must be at least 3 char")
     .max(255, "title must be max 255 chars")
     .required("title is required"),
-  status: yup
-    .string()
-    .required("status is required")
-    .oneOf(["pendding", "progressing", "completed"]),
   deadline: yup
     .date()
     .required("deadline is required")
